@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+			<div class="page-header">
+				<h1>
+					<span>Listagem de Chats</span>
+					<a href="javascript:void(0)" ui-sref="novoChat" class="btn btn-primary">Novo Chat</a>
+				</h1>
+			</div>
+        	<a ui-sref="app({id:app.id})" ng-repeat="app in apps">
+	        	<div class="panel panel-default">
+	        		<div class="panel-body">
+	        			<span>{{app.name}}</span>
+	        		</div>
+	        	</div>
+        	</a>
+        	<div ui-view></div>
+        </div>
+    </div>
+</div>

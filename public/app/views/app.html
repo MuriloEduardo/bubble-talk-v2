@@ -1,0 +1,22 @@
+<div class="container">
+	<div class="page-header">
+		<h1>App Interno <small>{{app_id}}</small></h1>
+	</div>
+	<nav class="navbar navbar-default">
+		<ul class="nav navbar-nav">
+			<li ui-sref-active="active"><a href="javascript:void(0)" ui-sref="app.dashboard">Painel</a></li>
+			<li ui-sref-active="active"><a href="javascript:void(0)" ui-sref="app.conversas">Conversas</a></li>
+			<li ui-sref-active="active"><a href="javascript:void(0)" ui-sref="app.equipe">Equipe</a></li>
+		</ul>
+		<div class="container-fluid">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="javascript:void(0)" ui-sref="apps">Voltar</a></li>
+			</ul>
+		</div>
+	</nav>
+    <div class="row">
+        <div class="col-lg-12">
+        	<div ui-view></div>
+        </div>
+    </div>
+</div>
