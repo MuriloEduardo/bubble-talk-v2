@@ -1,3 +1,9 @@
-app.factory('Socket', ['socketFactory', '$stateParams', function(socketFactory, $stateParams) {
-	return socketFactory({app_id: $stateParams.id});
+app.factory('Socket', ['socketFactory', function(socketFactory) {
+	var myIoSocket = io.connect('http://127.0.0.1:8080');
+
+	mySocket = socketFactory({
+		ioSocket: myIoSocket
+	});
+
+	return mySocket;
 }]);

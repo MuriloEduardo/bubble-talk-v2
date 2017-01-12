@@ -22,12 +22,13 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
     .state('app', {
       url: '/:id',
+      redirectTo: 'app.dashboard',
       templateUrl: 'views/app.html',
       controller: 'appCtrl'
     })
 
     .state('app.dashboard', {
-      url: '/painel',
+      url: '',
       templateUrl: 'views/dashboard.html',
       controller: 'dashboardCtrl'
     })

@@ -1,16 +1,16 @@
-app.controller('appsCtrl', function($scope){
+app.controller('appsCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
 	$scope.apps = [
 		{
-			id: '1sdf98sjdf98s',
+			id: '57a162fc1918b4b808f2879a',
 			name: 'Global Sistemas'
 		},
 		{
-			id: 'a54sda67sdh9a',
+			id: '586d1dcd34b3214bafa23dda',
 			name: 'Ortiz Veiculos'
 		},
 		{
-			id: 'dahs9d8ajs9dc',
+			id: '57a2be3a6b4cf22c23e4ce4e',
 			name: 'Lojas Virtuais - BR'
 		}
 	];
-});
+}]);

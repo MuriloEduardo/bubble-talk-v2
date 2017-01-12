@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<style>
+		body{padding-top: 50px;}
+		.body-chat {
+			height: 300px;
+    		overflow-y: auto;
+		}
+		.body-chat ul, .body-chat ul li {
+			padding: 0;
+			list-style: none;
+		}
+	</style>
+</head>
+<body>
+	<section ng-app="clienteApp" ng-controller="mainCtrl">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<!-- Salas / Membros -->
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<span>Salas / Membros</span>
+						</div>
+						<ul class="list-group">
+							<a class="list-group-item" ng-repeat="agente in equipe" href="javascript:void(0)" ng-click="changeRoom(agente._id)">{{agente.nome}}</a>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="page-header">
+						<h1>App ID: <small>{{app_id}}</small></h1>
+						<h3>Socket ID: <small>{{user.id}}</small></h3>
+					</div>
+					<div class="body-chat well">
+						<ul>
+							<li ng-repeat="message in messages track by $index">
+								<span class="username"><strong>{{message.username}}</strong></span>
+								<span class="message">{{message.message}}</span>
+							</li>
+						</ul>
+					</div>
+					<div class="control-chat">
+						<div class="row">
+							<div class="col-md-9">
+								<input type="text" class="form-control" ng-model="msg" placeholder="Sua mensagem">
+							</div>
+							<div class="col-md-3">
+								<button type="button" class="btn btn-primary form-control" ng-click="sendMessage(msg)">Enviar Mensagem</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-socket-io/0.7.0/socket.js"></script>
+<script>var app = angular.module('clienteApp', ['btford.socket-io']);</script>
+<script type="text/javascript" src="http://127.0.0.1:8080/app/js/services/SocketFactory.js"></script>
+<script>
+	app.controller('mainCtrl', ['$scope', 'Socket', function($scope, Socket) {
+		
+		$scope.messages = [];
+
+		$scope.app_id = '586d1dcd34b3214bafa23dda';
+
+		$scope.equipe = [
+			{
+				_id: '57a162fc1918b4b808f2879a',
+				nome: 'Global Sistemas'
+			},
+			{
+				_id: '5818de55a0d58c5005dd6eeb',
+				nome: 'Pedro Paulo'
+			},
+			{
+				_id: '5859d42cca708915c406bfc6',
+				nome: 'Ricardo Antonio'
+			}
+		];
+		
+		Socket.connect(function() {
+			console.log('conectou');
+		});
+
+		Socket.on('user:socket', function(data) {
+			$scope.user = data;
+		});
+
+		Socket.emit('change:room', $scope.app_id);
+
+		$scope.changeRoom = function(room_id) {
+			Socket.emit('change:room', room_id);
+		}
+
+		Socket.on('change:room', function(room_id) {
+			$scope.app_id = room_id;
+		});
+
+		Socket.on('message', function(data) {
+			if(data.username==$scope.user.id) {
+				data.username='Eu';
+				if(data.message=='Entrou') data.message='Seja Bem Vindo!';
+			}
+			$scope.messages.push(data);
+		});
+
+		$scope.sendMessage = function(msg) {
+			if(!msg) return;
+			Socket.emit('message', msg);
+			$scope.msg = '';
+		}
+	}]);
+</script>
+</html>

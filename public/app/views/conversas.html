@@ -1,11 +1,11 @@
 <div class="page-header">
-	<h3>Conversas</h3>
+	<h1>Conversas</h1>
 </div>
 <div class="row">
 	<div class="col-md-9">
 		<div class="chat-window">	
 			<ul>
-				<li ng-repeat="message in messages">
+				<li ng-repeat="message in messages track by $index">
 					<span class="username"><strong>{{message.username}}</strong></span>
 					<span class="message">{{message.message}}</span>
 				</li>

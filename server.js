@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 var http = require('http');
+var mongoose = require('mongoose');
+
 var server = http.createServer(app);
 var io = require('./server/routes/socket').listen(server);
 var path = require('path');

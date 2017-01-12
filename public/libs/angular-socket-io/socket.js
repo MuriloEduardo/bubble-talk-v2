@@ -70,8 +70,8 @@ angular.module('btford.socket-io', []).
             return socket.disconnect(close);
           },
 
-          connect: function(fn) {
-            return fn(socket.connect());
+          connect: function() {
+            return socket.connect();
           },
 
           // when socket.on('someEvent', fn (data) { ... }),

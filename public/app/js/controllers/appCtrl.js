@@ -1,45 +1,32 @@
-app.controller('appCtrl', ['$scope', '$stateParams', '$state', 'Socket', function($scope, $stateParams, $state, Socket){
-	
-	var administrador = {
-		_id: Date.now()
-	};
+app.controller('appCtrl', ['$scope', '$stateParams', '$state', 'Socket', '$rootScope', function($scope, $stateParams, $state, Socket, $rootScope){
 
-	$scope.users = [];
-	$scope.messages = [];
+	$rootScope.messages = [];
+
 	$scope.app_id = $stateParams.id;
 
+	$scope.equipe = [
+		{
+			_id: '5818de55a0d58c5005dd6eeb',
+			nome: 'Pedro Paulo'
+		},
+		{
+			_id: '5859d42cca708915c406bfc6',
+			nome: 'Ricardo Antonio'
+		}
+	];
+
 	Socket.connect(function() {
-		Socket.emit('add-user', {username: administrador._id});
+		console.log('conectou');
 	});
 
-	$scope.sendMessage = function(msg) {
-		if(!msg) return;
-		Socket.emit('message', {message: msg});
-		$scope.msg = '';
-	}
-	
-	Socket.emit('request-users', {});
-
-	Socket.on('users', function(data) {
-		$scope.users = data.users;
+	Socket.on('user:socket', function(data) {
+		$rootScope.user = data;
 	});
 
-	Socket.on('message', function(data) {
-		$scope.messages.push(data);
-	});
+	Socket.emit('change:room', $scope.app_id);
 
-	Socket.on('add-user', function(data) {
-		$scope.users.push(data.username);
-		$scope.messages.push({username: data.username, message: 'Entrou'});
-	});
-
-	Socket.on('prompt-username', function(data) {
-		// console.log(data)
-	})
-
-	Socket.on('remove-user', function(data) {
-		$scope.users.splice($scope.users.indexOf(data.username), 1);
-		$scope.messages.push({username: data.username, message: 'Saiu'});
+	Socket.on('change:room', function(data) {
+		console.log('change:room');
 	});
 
 	$scope.$on('$destroy', function(event) {
