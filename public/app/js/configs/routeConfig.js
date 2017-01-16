@@ -1,4 +1,4 @@
-app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $urlRouterProvider.otherwise('/');
 
@@ -7,7 +7,12 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     .state('apps', {
       url: '/',
       templateUrl: 'views/apps.html',
-      controller: 'appsCtrl'
+      controller: 'appsCtrl',
+      resolve: {
+        Chats: function (Api){
+          return Api.Chats();
+        }
+      }
     })
 
     .state('suaConta', {
@@ -17,14 +22,20 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
     .state('novoChat', {
       url: '/novo-chat',
-      templateUrl: 'views/novoChat.html'
+      templateUrl: 'views/novoChat.html',
+      controller: 'novoChatCtrl'
     })
 
     .state('app', {
       url: '/:id',
       redirectTo: 'app.dashboard',
       templateUrl: 'views/app.html',
-      controller: 'appCtrl'
+      controller: 'appCtrl',
+      resolve: {
+        Chat: function(Api, $stateParams){
+          return Api.getChat($stateParams.id);
+        }
+      }
     })
 
     .state('app.dashboard', {
@@ -45,5 +56,11 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
       controller: 'equipeCtrl'
     })
 
+    .state('app.configuracao', {
+      url: '/configuracao',
+      templateUrl: 'views/configuracao.html',
+      controller: 'configuracaoCtrl'
+    })
+
   $locationProvider.html5Mode(true).hashPrefix('!');
-});
+}]);

@@ -1,8 +1,9 @@
-app.controller('appCtrl', ['$scope', '$stateParams', '$state', 'Socket', '$rootScope', function($scope, $stateParams, $state, Socket, $rootScope){
+app.controller('appCtrl', ['$scope', '$stateParams', '$state', 'Socket', '$rootScope', 'Chat', 
+	function($scope, $stateParams, $state, Socket, $rootScope, Chat){
 
 	$rootScope.messages = [];
 
-	$scope.app_id = $stateParams.id;
+	$scope.Chat = Chat.data;
 
 	$scope.equipe = [
 		{
@@ -15,15 +16,17 @@ app.controller('appCtrl', ['$scope', '$stateParams', '$state', 'Socket', '$rootS
 		}
 	];
 
+	Socket.on('user:socket', function(data) {
+		$rootScope.user.socket_id = data.id;
+		console.log('user:socket')
+		console.log(data)
+	});
+
 	Socket.connect(function() {
 		console.log('conectou');
 	});
 
-	Socket.on('user:socket', function(data) {
-		$rootScope.user = data;
-	});
-
-	Socket.emit('change:room', $scope.app_id);
+	Socket.emit('change:room', $scope.Chat._id);
 
 	Socket.on('change:room', function(data) {
 		console.log('change:room');

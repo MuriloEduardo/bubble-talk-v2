@@ -1,2 +1,2 @@
-app.controller('equipeCtrl', function($scope){
-});
+app.controller('equipeCtrl', ['$scope', function($scope){
+}]);

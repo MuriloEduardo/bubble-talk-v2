@@ -19,3 +19,95 @@ body {
         padding: 15px 0;
     }
 }
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes spin {
+    0% {
+	    -webkit-transform: rotate(0deg);
+	    -ms-transform: rotate(0deg);
+	    transform: rotate(0deg);
+	}
+	100% {
+	    -webkit-transform: rotate(360deg);
+	    -ms-transform: rotate(360deg);
+	    transform: rotate(360deg);
+	}
+} 
+/* Standard syntax */ 
+@keyframes spin {
+    0% {
+	    -webkit-transform: rotate(0deg);
+	    -ms-transform: rotate(0deg);
+	    transform: rotate(0deg);
+	}
+	100% {
+	    -webkit-transform: rotate(360deg);
+	    -ms-transform: rotate(360deg);
+	    transform: rotate(360deg);
+	}
+}
+.loadersmall {
+	border: 5px solid #f3f3f3;
+	-webkit-animation: spin 1s linear infinite;
+	animation: spin 1s linear infinite;
+	border-top: 5px solid #555;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	margin: auto;
+}
+.suaconta-list {
+	list-style-type: none;
+	display: inline-block;
+}
+.suaconta-list img {
+	float: right;
+	border-radius: 2px;
+}
+.suaconta-list p {
+	text-align: right; 
+	display: inline-block;
+	padding: 0;
+	padding: 15px;
+}
+.token-overflow {
+	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+	white-space: -webkit-pre-wrap; /*Chrome & Safari */ 
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	white-space: pre-wrap;       /* css-3 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+	word-break: break-all;
+	white-space: normal;
+}
+	
+.modal {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+.chat-window {
+	height: 300px;
+	background: #f9f9f9;
+	padding: 15px;
+	margin-bottom: 20px;
+	overflow-y: auto;
+}
+.chat-window ul,
+.chat-window ul li {
+	padding: 0;
+	list-style: none;
+}

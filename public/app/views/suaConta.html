@@ -4,7 +4,237 @@
         	<div class="page-header">
         		<h1>Sua Conta</h1>
         	</div>
-        	<a href="javascript:void(0)" ui-sref="apps" class="btn btn-default">Voltar</a>
+        	<div class="row">
+        		<div class="col-md-2">
+        			<a href="javascript:void(0)" ui-sref="apps" class="btn btn-default form-control">Voltar</a>
+        		</div>
+        		<div class="col-md-2">
+        			<div class="form-group">
+                        <a href="/auth/logout" class="btn btn-danger form-control">Logout</a>
+                    </div>
+        		</div>
+        	</div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <!-- Local -->
+                        <div class="col-md-6">
+                            <div class="well">
+                                <div class="page-header">
+                                    <h1>Local</h1>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="control-label col-sm-2">ID:</label>
+                                        <div class="col-sm-10">
+                                            <span>{{user._id}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="control-label col-sm-2">Nome:</label>
+                                        <div class="col-sm-10">
+                                            <span>{{user.nome}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="control-label col-sm-2">E-mail:</label>
+                                        <div class="col-sm-10">
+                                            <span>{{user.local.email}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-4">
+                                            <a href="/auth/connect/local" class="btn btn-default form-control">Conectar Local</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Token -->
+                        <div class="col-md-6">
+                            <div class="well text-warning">
+                                <div class="page-header">
+                                    <h1>Token Access</h1>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Token: </div>
+                                        <div class="col-sm-10">
+                                            <p class="token-overflow">{{user.token}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Facebook -->
+                        <div class="col-md-6">
+                            <div class="well text-primary">
+                                <div class="page-header">
+                                    <h1>Facebook</h1>
+                                </div>
+                                <!-- Facebook Photo Perfil -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2"><img ng-src="{{user.facebook.picture}}"></div>
+                                        <div class="col-sm-10"></div>
+                                    </div>
+                                </div>
+                                <!-- Facebook ID -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">ID: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.facebook.id}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Facebook Primeiro Nome -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Nome: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.facebook.name}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Facebook Sexo -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Sexo: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.facebook.gender}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Facebook Link Profile -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Link Profile: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.facebook.link}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Facebook Email -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">E-mail: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.facebook.email}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Facebook Localizado -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Localidade: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.facebook.locale}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Facebook Timezone -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Timezone: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.facebook.timezone}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Facebook Token -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Token: </div>
+                                        <div class="col-sm-10">
+                                            <p class="token-overflow">{{user.facebook.token}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-4">
+                                            <a href="/auth/connect/facebook" class="btn btn-primary form-control">Conectar Facebook</a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="/auth/unlink/facebook" class="btn btn-primary form-control">Deslogar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Google -->
+                        <div class="col-md-6">
+                            <div class="well text-danger">
+                                <div class="page-header">
+                                    <h1>Google</h1>
+                                </div>
+                                <!-- Google Photo Perfil -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2"><img ng-src="{{user.photo.photo}}"></div>
+                                        <div class="col-sm-10"></div>
+                                    </div>
+                                </div>
+                                <!-- Google ID -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">ID: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.google.id}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Google Primeiro Nome -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Nome: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.google.name}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Google Email -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">E-mail: </div>
+                                        <div class="col-sm-10">
+                                            <p>{{user.google.email}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Google Token -->
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-2">Token: </div>
+                                        <div class="col-sm-10">
+                                            <p class="token-overflow">{{user.google.token}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-offset-2 col-md-4">
+                                            <a href="/auth/connect/google" class="btn btn-danger form-control">Conectar Google</a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="/auth/unlink/google" class="btn btn-danger form-control">Deslogar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

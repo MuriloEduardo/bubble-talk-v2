@@ -4,7 +4,37 @@
         	<div class="page-header">
         		<h1>Novo Chat</h1>
         	</div>
-        	<a href="javascript:void(0)" ui-sref="apps" class="btn btn-default">Voltar</a>
+        	<div class="row">
+        		<div class="col-md-2">
+        			<div class="form-group">
+        				<a href="javascript:void(0)" ui-sref="apps" class="btn btn-default form-control">Voltar</a>	
+        			</div>
+        		</div>
+        	</div>
+        	<div class="row">
+        		<div class="col-md-12">
+        			<div class="panel panel-default">
+    					<div class="panel-heading">
+							<h3>Insira o nome do novo chat</h3>
+						</div>
+    					<div class="panel-body">
+    						<form class="form-horizontal" name="ChatForm">
+								<div class="form-group">
+									<label class="control-label col-sm-2" for="appname">Nome do Novo Chat:</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" id="appname" ng-model="Chat.dados.appname" placeholder="Loja do Mario, que Mario?" autofocus>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2 col-sm-offset-10">
+	        							<button type="submit" ng-click="newChat(Chat, $event)" class="btn btn-primary form-control">Cadastrar Novo Chat</button>
+	        						</div>
+								</div>
+    						</form>
+    					</div>
+    				</div>
+        		</div>
+        	</div>
         </div>
     </div>
 </div>

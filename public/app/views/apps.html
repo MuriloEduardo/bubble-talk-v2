@@ -2,18 +2,27 @@
     <div class="row">
         <div class="col-lg-12">
 			<div class="page-header">
-				<h1>
-					<span>Listagem de Chats</span>
-					<a href="javascript:void(0)" ui-sref="novoChat" class="btn btn-primary">Novo Chat</a>
-				</h1>
+				<h1><span>Listagem de Chats</span></h1>
 			</div>
-        	<a ui-sref="app({id:app.id})" ng-repeat="app in apps">
+			<div class="row">
+				<div class="col-lg-2">
+					<div class="form-group">
+						<a href="javascript:void(0)" ui-sref="novoChat" class="btn btn-primary form-control">Novo Chat</a>
+					</div>
+				</div>
+			</div>
+        	<a ui-sref="app({id:chat._id})" ng-repeat="chat in chats">
 	        	<div class="panel panel-default">
 	        		<div class="panel-body">
-	        			<span>{{app.name}} <small style="color: #666">{{app.id}}</small></span>
+	        			<h4>{{chat.dados.appname}}</h4><small style="color: #666">{{chat._id}}</small>
 	        		</div>
 	        	</div>
         	</a>
+        	<div ng-if="!chats.length">
+        		<div class="jumbotron">
+        			<h2>Sem chats por aqui :(</h2>
+        		</div>
+        	</div>
         	<div ui-view></div>
         </div>
     </div>
