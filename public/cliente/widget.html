@@ -60,16 +60,24 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-socket-io/0.7.0/socket.js"></script>
-<script>var app = angular.module('clienteApp', ['btford.socket-io']);</script>
-<script type="text/javascript" src="http://127.0.0.1:8080/app/js/services/SocketFactory.js"></script>
+<script type="text/javascript" src="https://bubble-talk-v2-muriloeduardo.c9users.io/libs/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="https://bubble-talk-v2-muriloeduardo.c9users.io/libs/angular-socket-io/socket.js"></script>
 <script>
-	app.controller('mainCtrl', ['$scope', 'Socket', function($scope, Socket) {
+	var app = angular.module('clienteApp', ['btford.socket-io'])
+	.factory('Socket', ['socketFactory', function(socketFactory) {
+		var myIoSocket = io.connect('https://bubble-talk-v2-muriloeduardo.c9users.io');
+
+		mySocket = socketFactory({
+			ioSocket: myIoSocket
+		});
+
+		return mySocket;
+	}])
+	.controller('mainCtrl', ['$scope', 'Socket', function($scope, Socket) {
 		
 		$scope.messages = [];
 
-		$scope.app_id = '586d1dcd34b3214bafa23dda';
+		$scope.app_id = '5887487b3908915f91ecba42';
 
 		$scope.equipe = [
 			{

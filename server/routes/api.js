@@ -3,7 +3,6 @@ var Chat          = require('../models/chat');
 var mongoose 	  = require('mongoose');
 var nodemailer    = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
-var isLoggedIn    = require('../models/isLoggedIn');
 
 var conta = nodemailer.createTransport({
     service: 'Gmail',
@@ -14,8 +13,17 @@ var conta = nodemailer.createTransport({
 });
 
 module.exports = function(router, passport) {
-
-	// router.use(passport.authenticate('bearer', {session: false}));
+	
+	router.get('/testAPI', isLoggedIn, function(req, res, next){
+		if(req.query.access_token) next();
+		else next('route');
+	},passport.authenticate('bearer', {session: false}), function(req, res){
+		res.json({SecretData: '12345', Authenticated: true});
+	});
+	
+	router.get('/testAPI', function(req, res, next){
+		res.json({SecretData: '12345', Authenticated: false});
+	});
 
 	///////////////////////////////////////////////
 	////////////// USUARIO ///////////////////////
@@ -179,4 +187,12 @@ module.exports = function(router, passport) {
 			}
 		});
 	});
+};
+
+function isLoggedIn(req, res, next) {
+	if(req.isAuthenticated()){
+		return next();
+	}
+
+	res.redirect('/login');
 }

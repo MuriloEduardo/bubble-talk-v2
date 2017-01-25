@@ -1,5 +1,4 @@
-app.controller('appCtrl', ['$scope', '$stateParams', '$state', 'Socket', '$rootScope', 'Chat', 
-	function($scope, $stateParams, $state, Socket, $rootScope, Chat){
+app.controller('appCtrl', ['$scope', '$stateParams', '$state', 'Socket', '$rootScope', 'Chat', function($scope, $stateParams, $state, Socket, $rootScope, Chat){
 
 	$rootScope.messages = [];
 

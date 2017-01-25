@@ -15,9 +15,6 @@ var flash 		 = require('connect-flash');
 var morgan 		 = require('morgan');
 var MongoStore 	 = require('connect-mongo')(session);
 var sessionStore = new MongoStore({mongooseConnection: mongoose.connection,ttl: 2*24*60*60});
-var public 		 = express.Router();
-var api 		 = express.Router();
-var auth 		 = express.Router();
 
 mongoose.connect(configDB.url, function(err, res) {
 	mongoose.Promise = global.Promise;
@@ -28,6 +25,8 @@ mongoose.connect(configDB.url, function(err, res) {
 	}
 });
 
+require('./server/config/passport')(passport);
+
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -35,7 +34,6 @@ app.use(bodyParser.json());
 app.use(session({
 	saveUninitialized: true,
 	resave: true,
-	key: 'express.sid',
 	secret: 'session_secret',
 	store: sessionStore
 }));
@@ -49,19 +47,17 @@ app.set('views', path.resolve(__dirname, 'public'));
 
 app.use(express.static(path.resolve(__dirname, 'public')));
 
-require('./server/routes/public')(public, passport);
-require('./server/config/passport')(passport);
-require('./server/routes/api')(api, passport);
-require('./server/routes/auth')(auth, passport);
+var api = express.Router();
+require('./server/routes/api.js')(api, passport);
+app.use('/api', api);
 
-// Auth
+var auth = express.Router();
+require('./server/routes/auth.js')(auth, passport);
 app.use('/auth', auth);
 
-// Public
-app.use('/', public);
-
-// API
-app.use('/api', api);
+var secure = express.Router();
+require('./server/routes/secure.js')(secure, passport);
+app.use('/', secure);
 
 server.listen(port, function() {
 	console.log('Servidor rodando em %s', port);

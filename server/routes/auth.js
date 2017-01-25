@@ -1,5 +1,5 @@
-var Usuario    = require('../models/usuario');
-var isLoggedIn = require('../models/isLoggedIn');
+var Usuario = require('../models/usuario');
+
 module.exports = function(router, passport) {
 	
 	// CADASTRAR UM NOVO USUARIO
@@ -25,7 +25,7 @@ module.exports = function(router, passport) {
 	});
 
 	// LOGOUT //
-	router.get('/logout', isLoggedIn, function(req, res){
+	router.get('/logout', function(req, res){
 		req.logout();
 		res.redirect('/volte-sempre');
 	});

@@ -1,8 +1,8 @@
 var mongoose         = require('mongoose');
+var socketio 		 = require('socket.io');
 var session 	     = require('express-session');
 var MongoStore 	     = require('connect-mongo')(session);
 var sessionStore     = new MongoStore({mongooseConnection: mongoose.connection,ttl: 2*24*60*60});
-var socketio 		 = require('socket.io');
 var cookieParser 	 = require('cookie-parser');
 var passportSocketIo = require("passport.socketio");
 
@@ -12,7 +12,6 @@ module.exports.listen = function(server){
 	
 	io.use(passportSocketIo.authorize({
 		cookieParser: cookieParser,       // the same middleware you registrer in express
-		key:          'express.sid',       // the name of the cookie where express/connect stores its session_id
 		secret:       'session_secret',    // the session_secret to parse the cookie
 		store:        sessionStore,        // we NEED to use a sessionstore. no memorystore please
 		success:      onAuthorizeSuccess,  // *optional* callback on success - read more below
@@ -21,6 +20,8 @@ module.exports.listen = function(server){
 	
 	function onAuthorizeSuccess(data, accept){
 		console.log('successful connection to socket.io');
+		
+		console.log(data)
 		
 		// The accept-callback still allows us to decide whether to
 		// accept the connection or not.
@@ -34,8 +35,7 @@ module.exports.listen = function(server){
 	
 	function onAuthorizeFail(data, message, error, accept){
 		if(error)
-		throw new Error(message);
-		console.log('failed connection to socket.io:', message);
+			console.error('failed connection to socket.io:', message);
 		
 		// We use this callback to log all of our failed connections.
 		accept(null, false);

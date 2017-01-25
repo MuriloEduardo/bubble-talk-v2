@@ -1,8 +1,14 @@
 var Usuario = require('../models/usuario').Usuario;
 var Token = require('../models/usuario').Token;
-var isLoggedIn = require('../models/isLoggedIn');
 
 module.exports = function(router, passport){
+	
+	/*router.use(function(req, res, next){
+		if(req.isAuthenticated()){
+			return next();
+		}
+		res.redirect('/login');
+	});*/
 
 	////////////////////////////////////////////
 	// Public           ///////////////////////
@@ -64,10 +70,13 @@ module.exports = function(router, passport){
 	});
 
 	router.get('/get-token', function(req, res){
+		console.log(req)
 		Usuario.findOne({_id: req.user._id}).populate('token').exec(function(err, user) {
 			if(user.token==null)
 				user.generateToken();
-			res.redirect('/testToken');
+			
+			req.user = user;
+			res.redirect('/app/sua-conta');
 		});
 	});
 
@@ -82,10 +91,21 @@ module.exports = function(router, passport){
 	////////////////////////////////////////////
 	
 	router.get('/app/*', isLoggedIn, function(req, res){
-		res.render('./app/index.ejs', {
-			_id: req.user._id,
-			nome: req.user.nome, 
-			foto_perfil: req.user.foto_perfil
+		console.log(req.user)
+		Usuario.findOne({ _id: req.user._id }).populate('token').exec(function(err, user){
+			res.render('./app/index.ejs', {
+				_id: req.user._id,
+				nome: req.user.nome, 
+				foto_perfil: req.user.foto_perfil
+			});
 		});
 	});
 };
+
+function isLoggedIn(req, res, next) {
+	if(req.isAuthenticated()){
+		return next();
+	}
+
+	res.redirect('/login');
+}

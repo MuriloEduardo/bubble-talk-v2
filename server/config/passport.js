@@ -4,9 +4,9 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var BearerStrategy   = require('passport-http-bearer').Strategy;
 
 
-var Usuario             = require('../models/usuario').Usuario;
+var Usuario          = require('../models/usuario').Usuario;
 var Token            = require('../models/usuario').Token;
-var configAuth = require('./auth');
+var configAuth		 = require('./auth');
 
 module.exports = function(passport) {
 
@@ -25,6 +25,7 @@ module.exports = function(passport) {
 		passwordField: 'senha',
 		passReqToCallback: true
 	}, function(req, email, senha, done){
+			throw new Error('ocal-signup');
 			process.nextTick(function(){
 				Usuario.findOne({'local.email': email}, function(err, user){
 					if(err)
@@ -43,6 +44,7 @@ module.exports = function(passport) {
 								throw err;
 							return done(null, newUser);
 						});
+						throw new Error('!req.user if');
 					} else {
 						var user = req.user;
 						user.local.email = email;
@@ -53,6 +55,7 @@ module.exports = function(passport) {
 								throw err;
 							return done(null, user);
 						});
+						throw new Error('else');
 					}
 				});
 			});
@@ -99,8 +102,8 @@ module.exports = function(passport) {
 		    				return done(err);
 		    			if(user){
 		    				if(!user.facebook.token) {
-			    				if(!user.nome) user.nome = profile._json.name;
-		    					if(!user.foto_perfil) user.foto_perfil = profile._json.picture.data.url;
+			    				user.nome = profile._json.name;
+		    					user.foto_perfil = profile._json.picture.data.url;
 
 		    					user.facebook.id = profile._json.id;
 		    					user.facebook.name = profile._json.name;
@@ -145,8 +148,8 @@ module.exports = function(passport) {
 	    			// Usuário já está conectado e precisa ser mesclado
 	    			var user = req.user;
 
-	    			if(!user.nome) user.nome = profile._json.name;
-					if(!user.foto_perfil) user.foto_perfil = profile._json.picture.data.url;
+	    			user.nome = profile._json.name;
+					user.foto_perfil = profile._json.picture.data.url;
 
 	    			user.facebook.id = profile._json.id;
 					user.facebook.name = profile._json.name;
@@ -164,7 +167,6 @@ module.exports = function(passport) {
 	    				return done(null, user);
 	    			})
 	    		}
-	    		
 	    	});
 	    }
 	));
@@ -176,7 +178,6 @@ module.exports = function(passport) {
 	    passReqToCallback: true
 	  },
 	  function(req, accessToken, refreshToken, profile, done) {
-	  	console.log(profile)
 	    	process.nextTick(function(){
 
 	    		if(!req.user){
@@ -225,17 +226,6 @@ module.exports = function(passport) {
 	    		
 	    	});
 	    }
-	));
-
-	passport.use(new BearerStrategy({
-		},
-		function(token, done){
-			Usuario.findOne({ _id: token }, function(err, user){
-				if(!user)
-					return done(null, false);
-				return done(null, user);
-			});
-		}
 	));
 
 	passport.use(new BearerStrategy({}, function(token, done){
