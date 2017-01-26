@@ -25,7 +25,6 @@ module.exports = function(passport) {
 		passwordField: 'senha',
 		passReqToCallback: true
 	}, function(req, email, senha, done){
-			throw new Error('ocal-signup');
 			process.nextTick(function(){
 				Usuario.findOne({'local.email': email}, function(err, user){
 					if(err)
@@ -44,7 +43,6 @@ module.exports = function(passport) {
 								throw err;
 							return done(null, newUser);
 						});
-						throw new Error('!req.user if');
 					} else {
 						var user = req.user;
 						user.local.email = email;
@@ -75,7 +73,7 @@ module.exports = function(passport) {
 						return done(null, false, req.flash('loginAviso', 'Usuário não encontrado'));
 					}else{
 						if(!user.local.senha)
-							return done(null, false, req.flash('loginAviso', '<strong>Cadastro não confirmado!</strong> Configure sua nova senha <a href="/confirmacao/' + user._id + '" class="alert-click">clicando aqui</a>'));
+							return done(null, false, req.flash('loginAviso', 'Configure sua nova senha <a href="/confirmacao/' + user._id + '" class="text-danger alert-click"><b>aqui</b></a>'));
 					}
 					if(!user.validPassword(senha))
 						return done(null, false, req.flash('loginAviso', 'Senha inválida'));

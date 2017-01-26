@@ -33,7 +33,7 @@
     <div class="container">
       <form action="/auth/login" method="post" name="loginForm" class="form-signin">
       	<% if(message_login.length) { %>
-          <div class="alert alert-danger"><%= message_login %></div>
+          <div class="alert alert-danger"><%- message_login %></div>
         <% } %>
         <div class="page-header">
           <h2 class="form-signin-heading text-center">Entre</h2>

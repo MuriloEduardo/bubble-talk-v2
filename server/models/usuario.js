@@ -3,19 +3,6 @@ var bcrypt    = require('bcryptjs');
 var randtoken = require('rand-token');
 var Schema    = mongoose.Schema;
 
-var tokenSchema = mongoose.Schema({
-	value: String,
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: 'Usuario'
-	},
-	expireAt: {
-		type: Date,
-		expires: 60,
-		default: Date.now
-	}
-});
-
 var usuarioSchema = mongoose.Schema({
 	nome: String,
 	foto_perfil: String,
@@ -95,6 +82,19 @@ usuarioSchema.methods.generateToken = function() {
 		});
 	});
 };
+
+var tokenSchema = mongoose.Schema({
+	value: String,
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: 'Usuario'
+	},
+	expireAt: {
+		type: Date,
+		expires: 60,
+		default: Date.now
+	}
+});
 
 usuarioSchema.methods.generateHash = function(senha){
 	return bcrypt.hashSync(senha, bcrypt.genSaltSync(9));

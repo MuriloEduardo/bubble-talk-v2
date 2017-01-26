@@ -169,6 +169,7 @@ module.exports = function(router, passport) {
 
 	// LISTAR TODAS OS BUBBLES DO USUARIO LOGADO //
 	router.get('/chat', isLoggedIn, function(req, res){
+		console.log(req.user);
 		Chat.find({_id: { $in: req.user.bubbles.map(function(o){ return mongoose.Types.ObjectId(o); })}}, function(err, data){
 			res.json(data);
 		});

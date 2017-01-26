@@ -12,7 +12,6 @@ var cookieParser = require('cookie-parser');
 var session 	 = require('express-session');
 var passport 	 = require('passport');
 var flash 		 = require('connect-flash');
-var morgan 		 = require('morgan');
 var MongoStore 	 = require('connect-mongo')(session);
 var sessionStore = new MongoStore({mongooseConnection: mongoose.connection,ttl: 2*24*60*60});
 
@@ -27,7 +26,6 @@ mongoose.connect(configDB.url, function(err, res) {
 
 require('./server/config/passport')(passport);
 
-app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -47,6 +45,10 @@ app.set('views', path.resolve(__dirname, 'public'));
 
 app.use(express.static(path.resolve(__dirname, 'public')));
 
+var secure = express.Router();
+require('./server/routes/secure.js')(secure, passport);
+app.use('/app', secure);
+
 var api = express.Router();
 require('./server/routes/api.js')(api, passport);
 app.use('/api', api);
@@ -55,9 +57,9 @@ var auth = express.Router();
 require('./server/routes/auth.js')(auth, passport);
 app.use('/auth', auth);
 
-var secure = express.Router();
-require('./server/routes/secure.js')(secure, passport);
-app.use('/', secure);
+var public = express.Router();
+require('./server/routes/public.js')(public, passport);
+app.use('/', public);
 
 server.listen(port, function() {
 	console.log('Servidor rodando em %s', port);

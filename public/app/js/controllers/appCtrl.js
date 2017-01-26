@@ -30,8 +30,12 @@ app.controller('appCtrl', ['$scope', '$stateParams', '$state', 'Socket', '$rootS
 	Socket.on('change:room', function(data) {
 		console.log('change:room');
 	});
+	
+	console.log('$destroy')
 
 	$scope.$on('$destroy', function(event) {
+		console.log(event)
 		Socket.disconnect(true);
+		Socket.removeAllListeners();
 	});
 }]);

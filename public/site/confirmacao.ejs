@@ -1,1 +1,48 @@
-<<h1>Confirmacao</h1>
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>Confirmação - Chat em Tempo Real Bubble Talk</title>
+
+		<!-- Bootstrap Core CSS -->
+		<link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom CSS -->
+		<link href="/site/css/style.css" rel="stylesheet">
+
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<!-- Custom Fonts -->
+
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+    <div class="container">
+      <form action="/confirmacao" method="post" name="confirmacaoForm" class="form-signin">
+        <div class="page-header">
+        	<h2 class="form-signin-heading text-center">Confirmação</h2>
+        </div>
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input type="hidden" value="<%= user._id %>" name="id" required></input>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Seu email" value="<%= user.email %>" name="email" required readonly>
+        <label for="inputPassword" class="sr-only">Senha</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Sua senha" name="senha" autofocus required>
+        <div class="form-group">
+        	<button class="btn btn-warning btn-block" type="submit">Confirmar</button>
+        </div>
+      </form>
+    </div> <!-- /container -->
+  </body>
+</html>

@@ -21,8 +21,6 @@ module.exports.listen = function(server){
 	function onAuthorizeSuccess(data, accept){
 		console.log('successful connection to socket.io');
 		
-		console.log(data)
-		
 		// The accept-callback still allows us to decide whether to
 		// accept the connection or not.
 		accept(null, true);
@@ -71,6 +69,8 @@ module.exports.listen = function(server){
 
 			io.sockets.in(room).emit('message', {message: 'Entrou', username: socket.id});
 			io.to(room).emit('change:room', room);
+			
+			console.log(socket.rooms)
 		});
 	});
 };
