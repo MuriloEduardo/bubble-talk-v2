@@ -1,20 +1,20 @@
 <div class="container">
 	<div class="page-header">
-		<h1>App ID: <small>{{Chat._id}}</small></h1>
-		<h2>Appname: <small>{{Chat.dados.appname}}</small></h2>
-		<h3>Socket ID: <small>{{user.socket_id}}</small></h3>
+		<h1>App ID: <small class="text-overflow">{{Chat._id}}</small></h1>
+		<h2>Appname: <small class="text-overflow">{{Chat.dados.appname}}</small></h2>
+		<h3>Socket ID: <small class="text-overflow">{{user.socket_id}}</small></h3>
 	</div>
 	<nav class="navbar navbar-default">
+		<div class="container-fluid">
 		<ul class="nav navbar-nav">
 			<li ui-sref-active="active"><a href="javascript:void(0)" ui-sref="app.dashboard">Painel</a></li>
 			<li ui-sref-active="active"><a href="javascript:void(0)" ui-sref="app.conversas">Conversas</a></li>
 			<li ui-sref-active="active"><a href="javascript:void(0)" ui-sref="app.equipe">Equipe</a></li>
 			<li ui-sref-active="active"><a href="javascript:void(0)" ui-sref="app.configuracao">Configuração</a></li>
 		</ul>
-		<div class="container-fluid">
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="javascript:void(0)" ui-sref="apps">Voltar</a></li>
-			</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="javascript:void(0)" ui-sref="apps">Voltar</a></li>
+		</ul>
 		</div>
 	</nav>
     <div class="row">

@@ -32,11 +32,11 @@ module.exports = function(router, passport) {
 
 	// Facebook Passport Auth
 	router.get('/facebook', passport.authenticate('facebook', {scope: ['email'], authType: 'rerequest'}));
-	router.get('/facebook/callback', passport.authenticate('facebook', {successRedirect: '/app/sua-conta', failureRedirect: '/login'}));
+	router.get('/facebook/callback', passport.authenticate('facebook', {successRedirect: '/app', failureRedirect: '/login'}));
 
 	// Google Passport Auth
 	router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
-	router.get('/google/callback', passport.authenticate('google', {successRedirect: '/app/sua-conta', failureRedirect: '/login'}));
+	router.get('/google/callback', passport.authenticate('google', {successRedirect: '/app', failureRedirect: '/login'}));
 
 	router.get('/connect/facebook', passport.authorize('facebook', {scope: ['email']}));
 

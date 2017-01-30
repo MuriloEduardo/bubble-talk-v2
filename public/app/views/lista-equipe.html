@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-2">
+                <a href="javascript:void(0)" class="btn btn-default form-control" ui-sref="novoAgente">Inserir novo agente</a>
+            </div>
+            <div class="col-md-2">
+                <a href="javascript:void(0)" class="btn btn-danger form-control">Buscar no Gmail</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" ng-repeat="agente in equipe">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{agente.nome || agente.local.email}}
+                    <span class="badge" ng-bind="agente.conversas.lenght"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

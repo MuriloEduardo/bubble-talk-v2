@@ -1,4 +1,7 @@
 var mongoose = require('mongoose');
+var randtoken = require('rand-token');
+var Schema    = mongoose.Schema;
+
 var chatSchema = mongoose.Schema({
 	dados: {
 		appname: String,
@@ -16,6 +19,17 @@ var chatSchema = mongoose.Schema({
 		data_cadastro: {type: Date, default: Date.now}
 	},
 	criador: String,
+	token: {
+		value: {
+			type: String,
+			default: randtoken.generate(32)
+		},
+		expireAt: {
+			type: Date,
+			expires: 60,
+			default: Date.now
+		}
+	},
 	administradores: [],
 	conversas: [
 		{

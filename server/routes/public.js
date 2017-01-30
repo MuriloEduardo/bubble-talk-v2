@@ -1,15 +1,7 @@
-var Usuario = require('../models/usuario').Usuario;
-var Token = require('../models/usuario').Token;
-var path = require('path');
+var Usuario = require('../models/usuario');
+var path    = require('path');
 
 module.exports = function(router, passport){
-	
-	/*router.use(function(req, res, next){
-		if(req.isAuthenticated()){
-			return next();
-		}
-		res.redirect('/login');
-	});*/
 
 	////////////////////////////////////////////
 	// Public           ///////////////////////
@@ -72,23 +64,12 @@ module.exports = function(router, passport){
 	router.get('/volte-sempre', function(req, res){
 		res.render('./site/volte-sempre.ejs');
 	});
-
-	router.get('/get-token', function(req, res){
-		Usuario.findOne({_id: req.user._id}).populate('token').exec(function(err, user) {
-			if(user.token==null)
-				user.generateToken();
-			
-			req.user = user;
-			res.redirect('/app/sua-conta');
-		});
-	});
-
-	router.get('/testToken', function(req, res){
-		Usuario.findOne({_id: req.user._id}).populate('token').exec(function(err, user) {
-			res.json(user);
-		});
-	});
 	
+	/////////////////////////////////////////////////////////////
+	////// APLICAÇÃO A SER ENTREGUE PARA TODOS CLIENTES ////////
+	///////////////////////////////////////////////////////////
+	
+	// Widget Cliente
 	router.get('/widget', function(req, res){
 		res.sendFile(path.join(__dirname, '../../public', 'cliente/init.js'));
 	});

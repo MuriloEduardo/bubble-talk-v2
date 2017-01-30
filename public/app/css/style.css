@@ -70,7 +70,7 @@ body {
 	padding: 0;
 	padding: 15px;
 }
-.token-overflow {
+.text-overflow {
 	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
 	white-space: -webkit-pre-wrap; /*Chrome & Safari */ 
 	white-space: -pre-wrap;      /* Opera 4-6 */
@@ -79,6 +79,10 @@ body {
 	word-wrap: break-word;       /* Internet Explorer 5.5+ */
 	word-break: break-all;
 	white-space: normal;
+}
+
+.modal-backdrop{
+	z-index: 1029;
 }
 	
 .modal {

@@ -1,5 +1,6 @@
-var app = angular.module('bubbleApp', ['ui.router', 'btford.socket-io']);
-app.run(['$rootScope', '$state', function($rootScope, $state) {
+var app = angular.module('bubbleApp', ['ui.router', 'ui-notification', 'btford.socket-io'])
+
+.run(['$rootScope', '$state', '$urlRouter', function($rootScope, $state, $urlRouter) {
 	
 	$rootScope.$on('$stateChangeStart', function(evt, to, params) {
 	  if (to.redirectTo) {
@@ -13,7 +14,11 @@ app.run(['$rootScope', '$state', function($rootScope, $state) {
 	$rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 		$rootScope.showDialog = false;
 	});
-}]);
-app.config(['$qProvider', function ($qProvider) {
+	
+	$urlRouter.listen();
+}])
+
+.config(['$qProvider', '$urlRouterProvider', function ($qProvider, $urlRouterProvider) {
     $qProvider.errorOnUnhandledRejections(false);
+    $urlRouterProvider.deferIntercept();
 }]);

@@ -17,23 +17,23 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
 
     .state('suaConta', {
       url: '/sua-conta',
-      templateUrl: 'views/suaConta.html'
+      templateUrl: 'views/sua-conta.html'
     })
 
     .state('novoChat', {
       url: '/novo-chat',
-      templateUrl: 'views/novoChat.html',
+      templateUrl: 'views/novo-chat.html',
       controller: 'novoChatCtrl'
     })
 
     .state('app', {
-      url: '/:id',
+      url: '/:app_id',
       redirectTo: 'app.dashboard',
       templateUrl: 'views/app.html',
       controller: 'appCtrl',
       resolve: {
         Chat: function(Api, $stateParams){
-          return Api.getChat($stateParams.id);
+          return Api.getChat($stateParams.app_id);
         }
       }
     })
@@ -49,11 +49,31 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
       templateUrl: 'views/conversas.html',
       controller: 'conversasCtrl'
     })
-
+    
     .state('app.equipe', {
       url: '/equipe',
+      redirectTo: 'app.equipe.listaAgente',
       templateUrl: 'views/equipe.html',
       controller: 'equipeCtrl'
+    })
+    
+    .state('app.equipe.novoAgente', {
+      url: '/novo-agente',
+      templateUrl: 'views/novo-agente.html',
+      controller: 'novoAgenteCtrl'
+    })
+    
+    .state('app.equipe.listaAgente', {
+      url: '/',
+      templateUrl: 'views/lista-agente.html',
+      controller: 'listaAgenteCtrl',
+      resolve: {
+        Users: function ($http, $stateParams){
+          return $http.get('/api/user/' + $stateParams.app_id).then(function(res){
+            return res.data;
+          })
+        }
+      }
     })
 
     .state('app.configuracao', {

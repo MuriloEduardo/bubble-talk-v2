@@ -1,2 +1,4 @@
-app.controller('equipeCtrl', ['$scope', function($scope){
+app.controller('equipeCtrl', ['$scope', 'Users', function($scope, Users){
+    
+    $scope.equipe = Users.data;
 }]);

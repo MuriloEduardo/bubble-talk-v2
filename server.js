@@ -13,7 +13,10 @@ var session 	 = require('express-session');
 var passport 	 = require('passport');
 var flash 		 = require('connect-flash');
 var MongoStore 	 = require('connect-mongo')(session);
-var sessionStore = new MongoStore({mongooseConnection: mongoose.connection,ttl: 2*24*60*60});
+var sessionStore = new MongoStore({
+	mongooseConnection: mongoose.connection,
+	ttl: 2*24*60*60
+});
 
 mongoose.connect(configDB.url, function(err, res) {
 	mongoose.Promise = global.Promise;

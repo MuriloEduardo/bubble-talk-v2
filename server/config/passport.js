@@ -1,11 +1,7 @@
 var LocalStrategy    = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
-var BearerStrategy   = require('passport-http-bearer').Strategy;
-
-
-var Usuario          = require('../models/usuario').Usuario;
-var Token            = require('../models/usuario').Token;
+var Usuario          = require('../models/usuario');
 var configAuth		 = require('./auth');
 
 module.exports = function(passport) {
@@ -26,12 +22,16 @@ module.exports = function(passport) {
 		passReqToCallback: true
 	}, function(req, email, senha, done){
 			process.nextTick(function(){
-				Usuario.findOne({'local.email': email}, function(err, user){
+				Usuario.findOne({$or:[
+					{'local.email': email},
+					{'facebook.email': email},
+					{'google.email': email}
+				]}, function(err, user){
 					if(err)
 						return done(err);
 
 					if(user)
-						return done(null, false, req.flash('cadastrarAviso', 'Email existente'));
+						return done(null, false, req.flash('cadastrarAviso', 'Email já existente'));
 
 					if(!req.user) {
 						var newUser = new Usuario();
@@ -43,17 +43,6 @@ module.exports = function(passport) {
 								throw err;
 							return done(null, newUser);
 						});
-					} else {
-						var user = req.user;
-						user.local.email = email;
-						user.local.senha = user.generateHash(senha);
-
-						user.save(function(err){
-							if(err)
-								throw err;
-							return done(null, user);
-						});
-						throw new Error('else');
 					}
 				});
 			});
@@ -66,18 +55,38 @@ module.exports = function(passport) {
 		passReqToCallback: true
 	}, function(req, email, senha, done){
 			process.nextTick(function(){
-				Usuario.findOne({'local.email': email}, function(err, user){
+				Usuario.findOne({$or:[
+					{'local.email': email},
+					{'facebook.email': email},
+					{'google.email': email}
+				]}, function(err, user){
 					if(err)
 						return done(err);
 					if(!user){
-						return done(null, false, req.flash('loginAviso', 'Usuário não encontrado'));
+						return done(null, false, req.flash('loginAviso', 'Usuário não encontrado, cadastre-se <a href="/experimente-gratis" class="text-danger">aqui</a>'));
 					}else{
-						if(!user.local.senha)
-							return done(null, false, req.flash('loginAviso', 'Configure sua nova senha <a href="/confirmacao/' + user._id + '" class="text-danger alert-click"><b>aqui</b></a>'));
+						if(!user.local.senha) {
+							if(senha){
+								// Cadastrar nova senha
+								user.local = {
+									email: email, 
+									senha: Usuario().generateHash(senha)
+								};
+
+								user.save(function(err){
+									if(err)
+										throw err;
+									return done(null, false, user);
+									console.log('porrrrrrrrrraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+								});
+							} else {
+								return done(null, false, req.flash('loginAviso', 'Configure sua nova senha <a href="/confirmacao/' + user._id + '" class="text-danger alert-click"><b>aqui</b></a>'));
+							}
+						}
 					}
 					if(!user.validPassword(senha))
 						return done(null, false, req.flash('loginAviso', 'Senha inválida'));
-
+						
 					return done(null, user);
 				});
 			});
@@ -93,78 +102,57 @@ module.exports = function(passport) {
 	  },
 	  function(req, accessToken, refreshToken, profile, done) {
 	    	process.nextTick(function(){
-	    		if(!req.user){
-	    			// Usuário ainda não fez logon
-					Usuario.findOne({'facebook.id': profile.id}, function(err, user){
-		    			if(err)
-		    				return done(err);
-		    			if(user){
-		    				if(!user.facebook.token) {
-			    				user.nome = profile._json.name;
-		    					user.foto_perfil = profile._json.picture.data.url;
+    			// Usuário ainda não fez logon
+				Usuario.findOne({$or:[
+					{'facebook.id': profile.id},
+					{'local.email': profile._json.email}
+				]}, function(err, user){
+	    			if(err)
+	    				return done(err);
+	    			if(user){
+	    				
+	    				if(!user.facebook.token) {
+		    				user.nome			   = profile._json.name;
+	    					user.foto_perfil	   = profile._json.picture.data.url;
 
-		    					user.facebook.id = profile._json.id;
-		    					user.facebook.name = profile._json.name;
-		    					user.facebook.picture = profile._json.picture.data.url;
-		    					user.facebook.email = profile._json.email;
-		    					user.facebook.gender = profile._json.gender;
-		    					user.facebook.link = profile._json.link;
-		    					user.facebook.locale = profile._json.locale;
-		    					user.facebook.timezone = profile._json.timezone;
-		    					user.facebook.token = accessToken;
+	    					user.facebook.id       = profile._json.id;
+	    					user.facebook.name	   = profile._json.name;
+	    					user.facebook.picture  = profile._json.picture.data.url;
+	    					user.facebook.email    = profile._json.email;
+	    					user.facebook.gender   = profile._json.gender;
+	    					user.facebook.link     = profile._json.link;
+	    					user.facebook.locale   = profile._json.locale;
+	    					user.facebook.timezone = profile._json.timezone;
+	    					user.facebook.token    = accessToken;
 
-		    					user.save(function(err){
-		    						if(err)
-		    							throw err;
-		    					});
-	    					}
-		    				
-		    				return done(null, user);
-		    			} else {
-		    				var newUser = new Usuario();
-		    				newUser.nome = profile._json.name;
-		    				newUser.foto_perfil = profile._json.picture.data.url;;
-
-							newUser.facebook.id = profile._json.id;
-							newUser.facebook.name = profile._json.name;
-							newUser.facebook.picture = profile._json.picture.data.url;
-							newUser.facebook.email = profile._json.email;
-							newUser.facebook.gender = profile._json.gender;
-							newUser.facebook.link = profile._json.link;
-							newUser.facebook.locale = profile._json.locale;
-							newUser.facebook.timezone = profile._json.timezone;
-							newUser.facebook.token = accessToken;
-
-		    				newUser.save(function(err){
-		    					if(err)
-		    						throw err;
-		    					return done(null, newUser);
-		    				})
-		    			}
-		    		});
-	    		} else {
-	    			// Usuário já está conectado e precisa ser mesclado
-	    			var user = req.user;
-
-	    			user.nome = profile._json.name;
-					user.foto_perfil = profile._json.picture.data.url;
-
-	    			user.facebook.id = profile._json.id;
-					user.facebook.name = profile._json.name;
-					user.facebook.picture = profile._json.picture.data.url;
-					user.facebook.email = profile._json.email;
-					user.facebook.gender = profile._json.gender;
-					user.facebook.link = profile._json.link;
-					user.facebook.locale = profile._json.locale;
-					user.facebook.timezone = profile._json.timezone;
-					user.facebook.token = accessToken;
-
-	    			user.save(function(err){
-	    				if(err)
-	    					throw err;
+	    					user.save(function(err){
+	    						if(err) throw err;
+	    					});
+    					}
+	    				
 	    				return done(null, user);
-	    			})
-	    		}
+	    			} else {
+	    				
+	    				var newUser 			  = new Usuario();
+	    				newUser.nome			  = profile._json.name;
+	    				newUser.foto_perfil 	  = profile._json.picture.data.url;;
+
+						newUser.facebook.id 	  = profile._json.id;
+						newUser.facebook.name	  = profile._json.name;
+						newUser.facebook.picture  = profile._json.picture.data.url;
+						newUser.facebook.email	  = profile._json.email;
+						newUser.facebook.gender	  = profile._json.gender;
+						newUser.facebook.link	  = profile._json.link;
+						newUser.facebook.locale   = profile._json.locale;
+						newUser.facebook.timezone = profile._json.timezone;
+						newUser.facebook.token	  = accessToken;
+
+	    				newUser.save(function(err){
+	    					if(err) throw err;
+	    					return done(null, newUser);
+	    				});
+	    			}
+	    		});
 	    	});
 	    }
 	));
@@ -177,9 +165,10 @@ module.exports = function(passport) {
 	  },
 	  function(req, accessToken, refreshToken, profile, done) {
 	    	process.nextTick(function(){
-
-	    		if(!req.user){
-	    			Usuario.findOne({'google.id': profile.id}, function(err, user){
+	    		Usuario.findOne({$or:[
+					{'google.id': profile.id},
+					{'local.email': profile.emails[0].value}
+				]}, function(err, user){
 		    			if(err)
 		    				return done(err);
 		    			if(user){
@@ -208,29 +197,7 @@ module.exports = function(passport) {
 		    				})
 		    			}
 		    		});
-	    		} else {
-	    			var user = req.user;
-	    			user.google.id = profile.id;
-					user.google.token = accessToken;
-					user.google.name = profile.displayName;
-					user.google.email = profile.emails[0].value;
-
-					user.save(function(err){
-						if(err)
-							throw err;
-						return done(null, user);
-					});
-	    		}
-	    		
 	    	});
 	    }
 	));
-
-	passport.use(new BearerStrategy({}, function(token, done){
-		Token.findOne({value: token}).populate('usuario').exec(function(err, token){
-			if(!token)
-				return done(null, false);
-			return done(null, token.user);
-		});
-	}));
 };

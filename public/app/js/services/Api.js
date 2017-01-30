@@ -11,6 +11,10 @@ app.factory('Api', ['$http', function($http){
 	var _getUser = function(user_id) {
 		return $http.get('/api/user/' + user_id);
 	}
+	
+	var _getUsers = function(app_id) {
+		return $http.get('/api/users/' + app_id);
+	}
 
 	/////////////////////////////////////////////////
 	///////////////// CHAT /////////////////////////
@@ -39,6 +43,7 @@ app.factory('Api', ['$http', function($http){
 		delChat: _delChat,
 
 		newUser: _newUser,
-		User: _getUser
+		User: _getUser,
+		Users: _getUsers
 	};
 }]);

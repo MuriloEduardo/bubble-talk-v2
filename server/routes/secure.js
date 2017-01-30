@@ -1,4 +1,4 @@
-var Usuario = require('../models/usuario').Usuario;
+var Usuario = require('../models/usuario');
 
 module.exports = function(router, passport){
 	
